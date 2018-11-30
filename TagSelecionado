@@ -1,0 +1,129 @@
+PAI:
+
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import EstiloItem from '../../components/EstiloItem';
+
+class Gifts extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			tagEstilo: [
+				{key: 1, name:'Musica'},
+				{key: 2, name:'Leitura'},
+				{key: 3, name:'Geek & Nerd'},
+				{key: 4, name:'Flores'},
+				{key: 5, name:'Papelaria'},
+				{key: 6, name:'Decoração'},
+				{key: 7, name:'Beleza'},
+				{key: 8, name:'Doces'}
+			],
+			selecionado: ''
+		};
+
+		this.selecionar = this.selecionar.bind(this);
+	}
+
+	selecionar(data) {
+		let s = this.state;
+		s.selecionado = data.key;
+		this.setState(s);
+	}
+
+		return (
+        <View style={styles.formArea}>
+          <FlatList
+            contentContainerStyle={styles.feed}
+            data={this.state.tagEstilo}
+            renderItem={({item}) => <EstiloItem extraData={this.state.selecionado} data={item} selected={(item) => this.selecionar(item)} />} 
+          /> 		
+        </View> 
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#FFFFFF'
+	},
+	feed:{
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		backgroundColor: '#fdfdfd',
+		justifyContent:'flex-start'
+	}			
+});
+
+const mapStateToProps = (state) => {
+	return {
+		
+	}
+}
+
+const GiftsConnect = connect(mapStateToProps, {})(Gifts);
+export default GiftsConnect;
+
+
+
+
+Estilo Item: 
+
+
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+
+export default class EstiloItem extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			bEstiloGift: '#FFF',
+			colorIdade: '#3e4a59'			
+		};
+		this.select = this.select.bind(this);
+	}
+
+	select() {
+		this.props.selected(this.props.data);
+    alert(this.props.extraData) // Retornando Nada ou indefinido
+	}
+
+
+
+	render() {
+		return(
+			<TouchableOpacity onPress={this.select} style={[styles.tagItem, {backgroundColor: this.props.data.key == this.props.extraData ? '#3e4a59' : '#FFF'}]}>
+				<Text style={[styles.tagText, {color: this.state.cEstiloGift}]}>{this.props.data.name}</Text>
+			</TouchableOpacity>					
+		);
+	}
+}
+
+const styles = StyleSheet.create({
+	tagItem:{
+		width: 99,
+		height: 35,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 20,
+		borderWidth: 1,
+		borderColor: '#b5bbdf',
+		marginRight: 4,
+		marginBottom: 10
+	},
+	tagText:{
+		fontWeight: '300',
+		fontSize: 12,
+		paddingBottom: 10,
+		paddingLeft: 13,
+		paddingRight: 13,
+		paddingTop: 10		
+
+	}	
+});
